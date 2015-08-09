@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="Pragma" content="no-cache"/>
+
+		<title>Bepointer - Demo PDA GUB indicadors</title>
+		<meta name="description" content="">
+		<meta name="author" content="SituationRoom"> 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="http://code.highcharts.com/highcharts-3d.js"></script>
+		<script src="http://code.highcharts.com/highcharts-more.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js"></script>
+    <script type="text/javascript" src="./js/colorbrewer.js"></script>
+		<!-- My own script -->
+		<script type="text/javascript" src="./js/gubpda.js"></script>
+		
+		<link rel="stylesheet" href="css/widget_list.css">
+		<link rel="stylesheet" href="css/widget_chart.css">
+		<link rel="stylesheet" href="css/light-theme.css">
+		<link rel="stylesheet" href="css/makeitresponsive.css">
+		</head>
+		
+	<body >
+	      <!-- miquel: script to set text -->
+				<script id="text-template" type="text/template">
+					{{#linia}}
+						<div class="{{nivell}}">
+							<div class="fields">
+								{{#estat}}<div class="img"> <img class="estat" src="./img/{{estat}}" alt=""> </div>{{/estat}}
+								{{#field1}}<div class="field field1 cols{{columns}}"><span class="textField textField1 {{nivell}}"> {{field1}}</span></div>{{/field1}}
+								{{#field2}}<div class="field field2 cols{{columns}}"><span class="textField textField2 {{nivell}}"> {{field2}}</span></div>{{/field2}}
+								{{#field3}}<div class="field field3 cols{{columns}}"><span class="textField textField3 {{nivell}}"> {{field3}}</span></div>{{/field3}}
+								{{#field4}}<div class="field field4 cols{{columns}}"><span class="textField textField4 {{nivell}}"> {{field4}}</span></div>{{/field4}}
+								{{#field5}}<div class="field field5 cols{{columns}}"><span class="textField textField5 {{nivell}}"> {{field5}}</span></div>{{/field5}}
+							</div>
+						</div>
+					{{/linia}}
+			</script>
+   
+		<div id="column1" class="column1">
+		</div>
+		<div class="column2">
+		  <div class="GUB">
+		    <div class="test-title">DRAFT VERSION</div>
+		  </div>		 		  
+			<div class="indicator1">
+				<div id="chartFila1" class="chartFila fila1">
+				  <div id="chart01" class="chart01 chart-wrapper-2"></div>
+				</div>
+				<div id="chartFila2" class="chartFila fila2">
+				  <div id="chart02" class="chart02 chart-wrapper-2"></div>				  
+				  <div id="chart03" class="chart03 chart-wrapper-2"></div>				  
+				</div>
+				<div id="chartFila3" class="chartFila fila3">
+				  <div id="chart04" class="chart04 chart-wrapper-2"></div>				  
+				</div>
+				<div id="chartFila3" class="chartFila fila3">
+				  <div id="chart05" class="chart04 chart-wrapper-2"></div>				  
+				  <div id="chart06" class="chart04 chart-wrapper-2"></div>				  				  
+				</div>
+				<div id="chartFila4" class="chartFila fila4">
+				  <div id="chart07" class="chart04 chart-wrapper-2"></div>				  
+				  <div id="chart08" class="chart04 chart-wrapper-2"></div>				  				  
+				</div>				
+			</div>
+		</div>				
+				
+
+		<script>
+			var GoogleKey="12id_ENo1IxB3ASVAOn9ATm8-hnIDEsXezeRBxGE-agc";
+			var legendFontSize='10px';
+			var titleFontSize='12px'; var titleColor='#555555';
+			var colorPalette='Set2'; var colorPick=6;
+
+			UpdateText(1,"#column1",GoogleKey, "");
+			// Trameses MIR
+			UpdateChart(2,"#chart01",GoogleKey,30000,"Denúncies", true);			
+			// Errors MIR
+			UpdateStackedChartPercen(3,"#chart02",GoogleKey,30000,"Denúncies", true);								
+			// Trameses SCT
+			UpdateChart(4,"#chart03",GoogleKey,6000,"Denúncies", true);			
+			// Trameses Galileo
+			UpdateStackedChartNormal(5,"#chart04",GoogleKey,30000,"Denúncies", true);						
+			// Conductor NIP/SIP
+			UpdateStackedChartNormal(6,"#chart05",GoogleKey,15000,"Consultes", true);						
+			// Vehicle NIP/SIP
+			UpdateStackedChartNormal(7,"#chart06",GoogleKey,15000,"Consultes", true);									
+			// Conductor DGT
+			UpdateStackedChartNormal(8,"#chart07",GoogleKey,15000,"Consultes", true);						
+			// Vehicle DGT
+			UpdateStackedChartPercen(9,"#chart08",GoogleKey,15000,"Consultes", true);									
+			
+		</script>
+	</body>
+</html>
