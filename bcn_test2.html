@@ -8,7 +8,7 @@
     <script src="https://raw.githubusercontent.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
 
     <!-- var districtesData with geojson districtes -->
-	<script type="text/javascript" src="https://raw.githubusercontent.com/miquel-corral/google_maps/master/js/districtesBCN.json"></script>
+	<script type="text/javascript" src="https://raw.githubusercontent.com/miquel-corral/demo_pda/gh-pages/js/districtesBCN.json"></script>
 </head>
 
 
@@ -68,7 +68,7 @@
 
         'latitude':  41.3850639,
         'longitude': 2.1734034,
-        'url': 'https://raw.githubusercontent.com/miquel-corral/indicadors_gub/master/js/districtesBCN.json'
+        'url': 'https://raw.githubusercontent.com/miquel-corral/demo_pda/gh-pages/js/districtesBCN.json'
 
 
     };
@@ -117,10 +117,10 @@
                d > 900  ? '#BD0026' :
                d > 800  ? '#E31A1C' :
                d > 700  ? '#FC4E2A' :
-               d > 600   ? '#FD8D3C' :
-               d > 500   ? '#FEB24C' :
-               d > 400   ? '#FED976' :
-               d > 300   ? '#FED952' :
+               d > 600  ? '#FD8D3C' :
+               d > 500  ? '#FEB24C' :
+               d > 400  ? '#FED976' :
+               d > 300  ? '#FED952' :
                           '#FFEDA0';
     }
 
@@ -175,7 +175,7 @@
     legend.onAdd = function (map) {
 
         var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 2, 3, 4, 5, 6, 7, 8, 9],
+            grades = [0, 300, 400, 500, 600, 700, 800, 900, 1000],
             labels = [];
 
         // loop through our density intervals and generate a label with a colored square for each interval
