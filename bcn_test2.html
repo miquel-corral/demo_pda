@@ -100,8 +100,10 @@
         return this._div;
     };
 
+
+
     info.update = function (props) {
-        this._div.innerHTML = '<h4>Denúncies a l'últim mes</h4>' +  (props ?
+        this._div.innerHTML = '<h4>Denúncies a l\'últim mes</h4>' +  (props ?
             '<b>' + props.N_Distri + ':</b> ' + props.Denuncies + '<br /> Trànsit: ' + props.Transit + ' - Convivència: ' + props.Convivencia
             : 'Hover over a District');
     };
@@ -111,14 +113,14 @@
 
     // get color depending on number of denuncies value
     function getColor(d) {
-        return d > 9 ? '#800026' :
-               d > 8  ? '#BD0026' :
-               d > 7  ? '#E31A1C' :
-               d > 6  ? '#FC4E2A' :
-               d > 5   ? '#FD8D3C' :
-               d > 4   ? '#FEB24C' :
-               d > 3   ? '#FED976' :
-               d > 2   ? '#FED952' :
+        return d > 1000 ? '#800026' :
+               d > 900  ? '#BD0026' :
+               d > 800  ? '#E31A1C' :
+               d > 700  ? '#FC4E2A' :
+               d > 600   ? '#FD8D3C' :
+               d > 500   ? '#FEB24C' :
+               d > 400   ? '#FED976' :
+               d > 300   ? '#FED952' :
                           '#FFEDA0';
     }
 
@@ -129,7 +131,7 @@
             color: 'white',
             dashArray: '3',
             fillOpacity: 0.3,
-            fillColor: getColor(feature.properties.Resilience)
+            fillColor: getColor(feature.properties.Denuncies)
         };
     }
 
