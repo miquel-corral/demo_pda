@@ -1,0 +1,199 @@
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>BCN Test Google Map</title>
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <!-- <script src="js/Google.js"></script> -->
+    <script src="https://raw.githubusercontent.com/shramov/leaflet-plugins/master/layer/tile/Google.js"></script>
+
+    <!-- var districtesData with geojson districtes -->
+	<script type="text/javascript" src="https://raw.githubusercontent.com/miquel-corral/google_maps/master/js/districtesBCN.json"></script>
+</head>
+
+
+
+
+<body>
+
+<div id="map_canvas"></div>
+<!-- style for div map_canvas -->
+<style>
+    #map_canvas {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+        width: 1020px;
+        height: 700px;
+    }
+
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
+
+
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+
+</style>
+
+<!-- set Google API Key -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&key=AIzaSyAfH0CBdFuX-AV5OxwupWfp0_CKxG0E_AI"></script>
+
+
+<!-- map settings and loading -->
+<script>
+    // map settings
+    var map;
+    var myLocation = {
+
+
+        'latitude':  41.3850639,
+        'longitude': 2.1734034,
+        'url': 'https://raw.githubusercontent.com/miquel-corral/indicadors_gub/master/js/districtesBCN.json'
+
+
+    };
+
+
+    var map = new L.Map('map_canvas', {center: new L.LatLng(41.3850639, 2.1734034), zoom: 13});
+
+    var styles = [
+        {
+          featureType: 'all',
+          stylers: [{}]
+        }
+     ];
+
+    var ggl = new L.Google('ROADMAP', {
+	    mapOptions: {
+		    styles: styles
+	    }
+    });
+    map.addLayer(ggl);
+    map.addControl(new L.Control.Layers( {'Google':ggl}, {}));
+
+    // control that shows state info on hover
+    var info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info');
+        this.update();
+        return this._div;
+    };
+
+    info.update = function (props) {
+        this._div.innerHTML = '<h4>Denúncies a l'últim mes</h4>' +  (props ?
+            '<b>' + props.N_Distri + ':</b> ' + props.Denuncies + '<br /> Trànsit: ' + props.Transit + ' - Convivència: ' + props.Convivencia
+            : 'Hover over a District');
+    };
+
+    info.addTo(map);
+
+
+    // get color depending on number of denuncies value
+    function getColor(d) {
+        return d > 9 ? '#800026' :
+               d > 8  ? '#BD0026' :
+               d > 7  ? '#E31A1C' :
+               d > 6  ? '#FC4E2A' :
+               d > 5   ? '#FD8D3C' :
+               d > 4   ? '#FEB24C' :
+               d > 3   ? '#FED976' :
+               d > 2   ? '#FED952' :
+                          '#FFEDA0';
+    }
+
+    function style(feature) {
+        return {
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.3,
+            fillColor: getColor(feature.properties.Resilience)
+        };
+    }
+
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties);
+    }
+
+    function resetHighlight(e) {
+        geojson.resetStyle(e.target);
+        info.update();
+    }
+
+    function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+    }
+
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 2, 3, 4, 5, 6, 7, 8, 9],
+            labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+        return div;
+    };
+
+    legend.addTo(map);
+
+    geojson = L.geoJson(districtesData, {
+        style: style,
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+</script>
+
+
+</body>
